@@ -18,3 +18,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'))
 })
 
+// Generate API Key
+app.post('/create', (req, res) => {
+  const apiKey = 'sk-sm-v1-' + crypto.randomBytes(16).toString('hex').toUpperCase()
+  myApiKey = apiKey // <-- Simpan di variabel
+  res.json({ apiKey })
+})
+
