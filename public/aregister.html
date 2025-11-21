@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Admin</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff0f6;
+      padding: 30px;
+      width: 350px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(255, 0, 128, 0.2);
+      text-align: center;
+    }
+    input {
+      width: 95%;
+      padding: 10px;
+      border: 2px solid #ff80ab;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    button:hover { background: #ff6699; }
+    a { color: #ff4081; font-size: 14px; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Register Admin</h2>
+
+  <input type="email" id="email" placeholder="Email Admin">
+  <input type="password" id="password" placeholder="Password">
+
+  <button onclick="registerAdmin()">Register</button>
+
+  <p style="margin-top:10px;">
+    Sudah punya akun? 
+    <a href="alogin.html">Login</a>
+  </p>
+</div>
+
+<script>
+  async function registerAdmin() {
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+
+    const res = await fetch('/register-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    })
+
+    const data = await res.json()
+    if (data.success) {
+      alert("Admin berhasil dibuat!")
+      window.location.href = "alogin.html"
+    } else {
+      alert("Gagal register admin!")
+    }
+  }
+</script>
+
+</body>
+</html>
