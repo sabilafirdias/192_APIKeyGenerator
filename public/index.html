@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Key</title>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #ffe6f0;
+      color: #4a4a4a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background-color: #fff0f6;
+      border-radius: 20px;
+      padding: 30px;
+      width: 380px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(255, 0, 128, 0.2);
+    }
+    input, textarea {
+      width: 95%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 2px solid #ff80ab;
+      margin-top: 8px;
+      resize: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      background: #ff4081;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #ff6699;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Daftar User & API Key</h1>
+
+  <h3>Data User</h3>
+
+  <input type="text" id="fname" placeholder="First Name">
+  <input type="text" id="lname" placeholder="Last Name">
+  <input type="email" id="email" placeholder="Email Address">
+
+  <hr style="margin: 20px 0;">
+
+  <button onclick="buatApiKey()">Generate API Key</button>
+  <textarea id="apikey" readonly placeholder="API Key akan muncul di sini..."></textarea>
+
+  <hr style="margin: 20px 0;">
+
+
+  <button onclick="saveUser()">Save User dan APIKey</button>
+</div>
+
+<script>
+  // Generate saja, tidak simpan database
+  async function buatApiKey() {
+    const res = await fetch('/create', { method: 'POST' })
+    const data = await res.json()
+
+    if (data.success) {
+      document.getElementById('apikey').value = data.apiKey
+    }
+  }
+
+  async function saveUser() {
+    const apiKey = document.getElementById('apikey').value
+    if (!apiKey) return alert("Buat API key dulu!")
+
+    const body = {
+      firstName: document.getElementById('fname').value,
+      lastName: document.getElementById('lname').value,
+      email: document.getElementById('email').value,
+      apiKey: apiKey
+    }
+
+    const res = await fetch('/save-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    })
+
+    const data = await res.json()
+    if (data.success) alert("User berhasil disimpan!")
+  }
+</script>
+
+</body>
+</html>
